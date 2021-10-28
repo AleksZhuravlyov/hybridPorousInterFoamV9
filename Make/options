@@ -1,0 +1,32 @@
+EXE_INC = \
+    -I$(LIB_SRC)/transportModels/lnInclude \
+    -I$(LIB_SRC)/twoPhaseModels/twoPhaseMixture/lnInclude \
+    -I$(LIB_SRC)/twoPhaseModels/incompressibleTwoPhaseMixture/lnInclude \
+	-I$(LIB_SRC)/twoPhaseModels/immiscibleIncompressibleTwoPhaseMixture/lnInclude \
+    -I$(LIB_SRC)/twoPhaseModels/twoPhaseChange/lnInclude \
+    -I./libraries/porousImmiscibleIncompressibleTwoPhaseMixture/lnInclude \
+    -I./libraries/porousInterfaceProperties/lnInclude \
+    -I$(LIB_SRC)/twoPhaseModels/interfaceProperties/surfaceTensionModels/surfaceTensionModel \
+    -I$(LIB_SRC)/MomentumTransportModels/momentumTransportModels/lnInclude \
+    -I$(LIB_SRC)/MomentumTransportModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I./libraries/porousModels/lnInclude
+
+
+EXE_LIBS = \
+    -lmomentumTransportModels \
+    -lincompressibleMomentumTransportModels \
+    -lfiniteVolume \
+    -ldynamicFvMesh \
+    -ltopoChangerFvMesh \
+    -ltwoPhaseChangeModels \
+    -lfvModels \
+    -lfvConstraints \
+    -lmeshTools \
+    -L$(FOAM_USER_LIBBIN) \
+    -lporousImmiscibleIncompressibleTwoPhaseMixture \
+    -lporousModels \
+    -lporousInterfaceProperties
