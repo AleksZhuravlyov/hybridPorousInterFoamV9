@@ -56,59 +56,59 @@ Foam::relativePermeabilityModels::krBrooksAndCorey::krBrooksAndCorey
  const volScalarField& Sa
  )
   :
-  relativePermeabilityModel(name, relativePermeabilityProperties,Sb,Sa),
+  relativePermeabilityModel(name, relativePermeabilityProperties,Sb,Sa),  
   Smin_
   (
       IOobject
       (
-          Sb_.name()+"min",
+          "kr."+Sb_.name()+".r",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      relativePermeabilityProperties.lookupOrDefault(Sb_.name()+"min",dimensionedScalar(Sb_.name()+"min",dimless,0))
+      relativePermeabilityProperties.subDict(typeName + "Coeffs").lookupOrDefault("kr."+Sb_.name()+".r",dimensionedScalar("kr."+Sb_.name()+".r",dimless,0))	  
   ),
   Smax_
   (
       IOobject
       (
-          Sb_.name()+"max",
+          "kr."+Sa_.name()+".r",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      relativePermeabilityProperties.lookupOrDefault(Sb_.name()+"max",dimensionedScalar(Sb_.name()+"max",dimless,1))
+      dimensionedScalar(Sa_.name()+"_r",dimless,1) - relativePermeabilityProperties.subDict(typeName + "Coeffs").lookupOrDefault("kr."+Sa_.name()+".r",dimensionedScalar("kr."+Sa_.name()+".r",dimless,0))  
   ),
-  krBrooksAndCoreyCoeffs_(relativePermeabilityProperties.subDict(typeName + "Coeffs")),
+  krBrooksAndCoreyCoeffs_(relativePermeabilityProperties.subDict(typeName + "Coeffs")),  
   nb_
   (
       IOobject
       (
-          "n"+Sb_.name(),
+          "kr.n."+Sb_.name(),
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("n"+Sb_.name(),0)
+      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr.n."+Sb_.name(),0)
   ),
   na_
   (
       IOobject
       (
-          "n"+Sa_.name(),
+          "kr.n."+Sa_.name(),
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("n"+Sa_.name(),0)
+      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr.n."+Sa_.name(),0)
   ),
   Se_
   (
@@ -178,31 +178,32 @@ Foam::relativePermeabilityModels::krBrooksAndCorey::krBrooksAndCorey
   (
       IOobject
       (
-          "kr"+Sb_.name()+"max",
+          "kr.A."+Sb_.name(),
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr"+Sb_.name()+"max",1.0)
+      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr.A."+Sb_.name(),1)
   ),
   kramax_
   (
       IOobject
       (
-          "kr"+Sa_.name()+"max",
+          "kr.A."+Sa_.name(),
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr"+Sa_.name()+"max",1.0)
+      krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr.A."+Sa_.name(),1.0)
   )
-{
+{	
+	
     if (gMin(nb_) <= 0 || gMin(na_) <= 0)
-    {
+    {		
       FatalErrorIn
         (
          "in krBrooksAndCorey.C"

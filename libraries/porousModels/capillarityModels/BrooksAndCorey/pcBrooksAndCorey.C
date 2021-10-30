@@ -58,53 +58,53 @@ Foam::capillarityModels::pcBrooksAndCorey::pcBrooksAndCorey
   (
       IOobject
       (
-          Sb_.name()+"minpc",
+          "pc."+Sb_.name()+".min",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      pcBrooksAndCoreyCoeffs_.lookupOrDefault(Sb_.name()+"minpc",capillarityProperties.lookupOrDefault(Sb_.name()+"min",dimensionedScalar(Sb_.name()+"min",dimless,0)))
+      pcBrooksAndCoreyCoeffs_.lookupOrDefault("pc."+Sb_.name()+".min",capillarityProperties.lookupOrDefault("pc."+Sb_.name()+".min",dimensionedScalar("pc."+Sb_.name()+".min",dimless,0)))
   ),
   Smaxpc_
   (
       IOobject
       (
-          Sb_.name()+"maxpc",
+          "pc."+Sb_.name()+".max",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      pcBrooksAndCoreyCoeffs_.lookupOrDefault(Sb_.name()+"maxpc",capillarityProperties.lookupOrDefault(Sb_.name()+"max",dimensionedScalar(Sb_.name()+"max",dimless,1)))
+      pcBrooksAndCoreyCoeffs_.lookupOrDefault("pc."+Sb_.name()+".max",capillarityProperties.lookupOrDefault("pc."+Sb_.name()+".max",dimensionedScalar("pc."+Sb_.name()+".max",dimless,0)))
   ),
   pc0_
   (
       IOobject
       (
-          "pc0",
+          "pc.A",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      pcBrooksAndCoreyCoeffs_.lookupOrDefault("pc0",dimensionedScalar("pc0",dimless,0))
+      pcBrooksAndCoreyCoeffs_.lookupOrDefault("pc.A",dimensionedScalar("pc.A",dimless,0))
   ),
   alpha_
   (
       IOobject
       (
-          "alpha",
+          "pc.n",
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      pcBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("alpha",0)
+      pcBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("pc.n",0)
   ),
   Se_
   (
@@ -145,6 +145,7 @@ Foam::capillarityModels::pcBrooksAndCorey::pcBrooksAndCorey
    dimensionSet(1,-1,-2,0,0,0,0)
    )
 {
+	
     if (gMin(alpha_) == 0) FatalErrorIn("Foam::capillarityModels::pcBrooksAndCorey::pcBrooksAndCorey") << "alpha = 0 in pcBrooksAndCorey" << abort(FatalError);
 }
 
