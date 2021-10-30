@@ -60,7 +60,8 @@ namespace Foam
 
       //- Van Genuchten coefficients
       dictionary krVanGenuchtenCoeffs_;
-      volScalarField m_;
+      volScalarField mb_;
+	  volScalarField ma_;
 
       //- effective saturation of phase b
       volScalarField Se_;
@@ -89,7 +90,8 @@ namespace Foam
       (
        const word& name,
        const dictionary& relativePermeabilityProperties,
-       const volScalarField& Sb
+       const volScalarField& Sb,
+	   const volScalarField& Sa
        );
 
       //- Destructor
@@ -128,16 +130,16 @@ namespace Foam
 	Se_.max(1e-4);
 	Se_.min(1-1e-4);
 	
-	kra_ = kramax_ * pow(1-Se_,0.5) * pow(1-pow(Se_,1/m_),2*m_);
-	krb_ = krbmax_ * pow(Se_,0.5) * pow(1-pow(1-pow(Se_,1/m_),m_),2);
+	kra_ = kramax_ * pow(1-Se_,0.5) * pow(1-pow(Se_,1/ma_),2*ma_);
+	krb_ = krbmax_ * pow(Se_,0.5) * pow(1-pow(1-pow(Se_,1/mb_),mb_),2);
         
-	dkradS_ = - pow((1-pow(Se_,1/m_)),2*m_-1) * (-5*pow(Se_,1/m_+1)+4*pow(Se_,1/m_)+Se_);
+	dkradS_ = - pow((1-pow(Se_,1/ma_)),2*ma_-1) * (-5*pow(Se_,1/ma_+1)+4*pow(Se_,1/ma_)+Se_);
 	dkradS_ *= 1/(2*pow((1-Se_),0.5)*Se_);
 	dkradS_ *=  1/(Smax_ - Smin_);
 	dkradS_ *= kramax_;
         
-	dkrbdS_ = 0.5 * (1-pow((1-pow(Se_,1/m_)),m_));
-	dkrbdS_ *= ( 4 * pow(Se_,1/m_-1/2) * pow( (1-pow(Se_,1/m_)) , m_-1)) - ( pow((1-pow(Se_,1/m_)),m_) -1) / pow(Se_,0.5);
+	dkrbdS_ = 0.5 * (1-pow((1-pow(Se_,1/mb_)),mb_));
+	dkrbdS_ *= ( 4 * pow(Se_,1/mb_-1/2) * pow( (1-pow(Se_,1/mb_)) , mb_-1)) - ( pow((1-pow(Se_,1/mb_)),mb_) -1) / pow(Se_,0.5);
 	dkrbdS_ *= 1/(Smax_ - Smin_);
 	dkrbdS_ *= krbmax_;
 

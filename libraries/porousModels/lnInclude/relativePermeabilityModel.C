@@ -42,12 +42,14 @@ Foam::relativePermeabilityModel::relativePermeabilityModel
 (
     const word& name,
     const dictionary& relativePermeabilityProperties,
-    const volScalarField& Sb
+    const volScalarField& Sb,
+	const volScalarField& Sa
 )
 :
     name_(name),
     relativePermeabilityProperties_(relativePermeabilityProperties),
-    Sb_(Sb)
+    Sb_(Sb),
+	Sa_(Sa)
 {}
 
 // ************************************************************************* //

@@ -16,7 +16,7 @@ volScalarField K
 volScalarField k0("k0", K); 
 surfaceScalarField k0f("k0f",fvc::interpolate(k0,"k0"));
 
-autoPtr<relativePermeabilityModel> krModel = relativePermeabilityModel::New("krModel",transportProperties,alpha1);
+autoPtr<relativePermeabilityModel> krModel = relativePermeabilityModel::New("krModel",transportProperties,alpha1,alpha2);
 krModel->correct(); 
 auto kr1 = volScalarField(krModel->krb());
 auto kr2 = volScalarField(krModel->kra());

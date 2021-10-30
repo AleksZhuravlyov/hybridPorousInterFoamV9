@@ -88,7 +88,8 @@ namespace Foam
       (
        const word& name,
        const dictionary& relativePermeabilityProperties,
-       const volScalarField& Sb
+       const volScalarField& Sb,
+	   const volScalarField& Sa
        );
 
       //- Destructor

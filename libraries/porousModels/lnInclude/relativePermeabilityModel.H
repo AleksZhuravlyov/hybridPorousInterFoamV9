@@ -72,6 +72,7 @@ namespace Foam
     dictionary relativePermeabilityProperties_;
 
     const volScalarField& Sb_;
+	const volScalarField& Sa_;
 
     // Private Member Functions
 
@@ -98,9 +99,10 @@ namespace Foam
      (
       const word& name,
       const dictionary& relativePermeabilityProperties,
-      const volScalarField& Sb
+      const volScalarField& Sb,
+	  const volScalarField& Sa
       ),
-     (name, relativePermeabilityProperties, Sb)
+     (name, relativePermeabilityProperties, Sb, Sa)
      );
 
 
@@ -111,7 +113,8 @@ namespace Foam
     (
      const word& name,
      const dictionary& relativePermeabilityProperties,
-     const volScalarField& Sb
+     const volScalarField& Sb,
+	 const volScalarField& Sa
      );
 
 
@@ -122,7 +125,8 @@ namespace Foam
     (
      const word& name,
      const dictionary& relativePermeabilityProperties,
-     const volScalarField& Sb
+     const volScalarField& Sb,
+	 const volScalarField& Sa
      );
 
 

@@ -49,10 +49,11 @@ Foam::relativePermeabilityModels::krVanGenuchten::krVanGenuchten
 (
  const word& name,
  const dictionary& relativePermeabilityProperties,
- const volScalarField& Sb
+ const volScalarField& Sb,
+ const volScalarField& Sa
  )
   :
-  relativePermeabilityModel(name, relativePermeabilityProperties,Sb),
+  relativePermeabilityModel(name, relativePermeabilityProperties,Sb,Sa),
   Smin_
   (
       IOobject
@@ -80,18 +81,31 @@ Foam::relativePermeabilityModels::krVanGenuchten::krVanGenuchten
       relativePermeabilityProperties.lookupOrDefault(Sb_.name()+"max",dimensionedScalar(Sb_.name()+"max",dimless,1))
   ),
   krVanGenuchtenCoeffs_(relativePermeabilityProperties.subDict(typeName + "Coeffs")),
-  m_
+  mb_
   (
       IOobject
       (
-          "m",
+          "m"+Sb_.name(),
           Sb_.time().timeName(),
           Sb_.db(),
           IOobject::READ_IF_PRESENT,
           IOobject::NO_WRITE
       ),
       Sb.mesh(),
-      krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("m",0)
+      krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("m"+Sb_.name(),0)
+  ),
+  ma_
+  (
+      IOobject
+      (
+          "m"+Sa_.name(),
+          Sb_.time().timeName(),
+          Sb_.db(),
+          IOobject::READ_IF_PRESENT,
+          IOobject::NO_WRITE
+      ),
+      Sb.mesh(),
+      krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("m"+Sa_.name(),0)
   ),
   Se_
   (
@@ -157,19 +171,6 @@ Foam::relativePermeabilityModels::krVanGenuchten::krVanGenuchten
    Sb.mesh(),
    dimensionSet(0,0,0,0,0)
    ),
-  kramax_
-  (
-      IOobject
-      (
-          "kr"+Sb_.name()+"max",
-          Sb_.time().timeName(),
-          Sb_.db(),
-          IOobject::READ_IF_PRESENT,
-          IOobject::NO_WRITE
-      ),
-      Sb.mesh(),
-      krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("kr"+Sb_.name()+"max",1.0)
-  ),
   krbmax_
   (
       IOobject
@@ -182,9 +183,22 @@ Foam::relativePermeabilityModels::krVanGenuchten::krVanGenuchten
       ),
       Sb.mesh(),
       krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("kr"+Sb_.name()+"max",1.0)
+  ),
+  kramax_
+  (
+      IOobject
+      (
+          "kr"+Sa_.name()+"max",
+          Sb_.time().timeName(),
+          Sb_.db(),
+          IOobject::READ_IF_PRESENT,
+          IOobject::NO_WRITE
+      ),
+      Sb.mesh(),
+      krVanGenuchtenCoeffs_.lookupOrDefault<scalar>("kr"+Sa_.name()+"max",1.0)
   )
 {
-  if (gMin(m_) <= 0)
+  if (gMin(mb_) <= 0 || gMin(ma_) <= 0)
     {
       FatalErrorIn
         (

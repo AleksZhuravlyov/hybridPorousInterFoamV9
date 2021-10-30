@@ -1,5 +1,5 @@
 // Updating Relative Permeability Model
-autoPtr<relativePermeabilityModel> krModel = relativePermeabilityModel::New("krModel",transportProperties,alpha1);
+autoPtr<relativePermeabilityModel> krModel = relativePermeabilityModel::New("krModel",transportProperties, alpha1, alpha2);
 krModel->correct();
 kr1=krModel->krb();
 kr2=krModel->kra();
