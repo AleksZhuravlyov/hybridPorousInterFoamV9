@@ -200,11 +200,7 @@ Foam::relativePermeabilityModels::krBrooksAndCorey::krBrooksAndCorey
       Sb.mesh(),
       krBrooksAndCoreyCoeffs_.lookupOrDefault<scalar>("kr.A."+Sa_.name(),1.0)
   )
-{
-	
-	Info << "krbmax_" << endl << krbmax_ << endl;
-	Info << "kramax_" << endl << kramax_ << endl;
-	
+{	
 	
     if (gMin(nb_) <= 0 || gMin(na_) <= 0)
     {		
