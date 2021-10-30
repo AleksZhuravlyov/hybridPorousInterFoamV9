@@ -59,7 +59,8 @@ namespace Foam
       volScalarField Smax_;
 
       dictionary krBrooksAndCoreyCoeffs_;
-      volScalarField n_;
+      volScalarField na_;
+	  volScalarField nb_;
 
       //- effective saturation of phase b
       volScalarField Se_;
@@ -124,12 +125,12 @@ namespace Foam
         Se_.min(1-1e-4);		
 
 
-	kra_ = kramax_* pow((scalar(1)-Se_),n_);
-	krb_ = krbmax_ * pow(Se_,n_);
+	kra_ = kramax_* pow((scalar(1)-Se_),na_);
+	krb_ = krbmax_ * pow(Se_,nb_);
 
 
-        dkradS_ = -kramax_*n_*pow((scalar(1)-Se_),n_-1)/(Smax_- Smin_);
-        dkrbdS_ = krbmax_*n_*pow(Se_,n_-1)/(Smax_- Smin_);	
+        dkradS_ = -kramax_*na_*pow((scalar(1)-Se_),na_-1)/(Smax_- Smin_);
+        dkrbdS_ = krbmax_*nb_*pow(Se_,nb_-1)/(Smax_- Smin_);	
       }
 
     };
